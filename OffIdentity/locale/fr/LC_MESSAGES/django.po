@@ -1,0 +1,149 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-27 13:30+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: OffIdentity/templates/OffIdentity/change_identity.html:13
+msgid "offidentity_update"
+msgstr "Modifier une identité"
+
+#: OffIdentity/templates/OffIdentity/change_identity.html:19
+msgid "new_key"
+msgstr "Nouvelle clé d'authentification"
+
+#: OffIdentity/templates/OffIdentity/change_identity.html:25
+#: OffIdentity/templates/OffIdentity/create_identity.html:25
+msgid "save"
+msgstr "Enregistrer"
+
+#: OffIdentity/templates/OffIdentity/create_identity.html:13
+msgid "offidentity_creation"
+msgstr "Créer une identité"
+
+#: OffIdentity/templates/OffIdentity/details.html:9
+msgid "offidentity_details"
+msgstr "Identité"
+
+#: OffIdentity/templates/OffIdentity/emails/registration_email_subject_template.txt:2
+#, python-format
+msgid "[Sipy Application] Welcome to %(site_name)s !"
+msgstr "[Sipy Application] Bienvenue sur %(site_name)s !"
+
+#: OffIdentity/templates/OffIdentity/emails/registration_email_template.html:2
+#: OffIdentity/templates/OffIdentity/emails/registration_html_email_template.html:3
+#, python-format
+msgid ""
+"You're receiving this email because you just registered at %(site_name)s."
+msgstr ""
+"Vous recevez ce message suite à votre enregistrement sur l'application "
+"%(site_name)s."
+
+#: OffIdentity/templates/OffIdentity/emails/registration_email_template.html:4
+#, python-format
+msgid "Please note the following code : %(identity_key)s"
+msgstr "Veuillez noter le code suivant : %(identity_key)s"
+
+#: OffIdentity/templates/OffIdentity/emails/registration_email_template.html:5
+#: OffIdentity/templates/OffIdentity/emails/registration_html_email_template.html:7
+msgid "Show it to us on your first clothes deposit !"
+msgstr "Montrez-le nous lors de votre premier dépôt d’habits !"
+
+#: OffIdentity/templates/OffIdentity/emails/registration_email_template.html:6
+#: OffIdentity/templates/OffIdentity/emails/registration_html_email_template.html:10
+msgid "Please go to the following page to choose a password:"
+msgstr ""
+"Si vous voulez définir votre mot de passe, merci d'aller sur cette page:"
+
+#: OffIdentity/templates/OffIdentity/emails/registration_email_template.html:10
+#: OffIdentity/templates/OffIdentity/emails/registration_html_email_template.html:16
+msgid "Your username, in case you've forgotten:"
+msgstr "Votre nom d'utilisateur est :"
+
+#: OffIdentity/templates/OffIdentity/emails/registration_email_template.html:12
+#: OffIdentity/templates/OffIdentity/emails/registration_html_email_template.html:19
+msgid "Thanks for using our site!"
+msgstr "Merci de votre intérêt et à bientôt !"
+
+#: OffIdentity/templates/OffIdentity/emails/registration_email_template.html:14
+#: OffIdentity/templates/OffIdentity/emails/registration_html_email_template.html:22
+#, python-format
+msgid "The %(site_name)s team"
+msgstr "L'équipe %(site_name)s"
+
+#: OffIdentity/templates/OffIdentity/emails/registration_html_email_template.html:6
+#, python-format
+msgid ""
+"Please note the following code : <strong style=\"color:red;\">"
+"%(identity_key)s</strong>"
+msgstr ""
+"Veuillez noter le code suivant : <strong style=\"color:red;\">"
+"%(identity_key)s</strong>"
+
+#: OffIdentity/templates/OffIdentity/identity_key_display.html:2
+msgid "auth_key"
+msgstr "Clé d'authentification"
+
+#: OffIdentity/templates/OffIdentity/identity_key_display.html:13
+#: OffIdentity/templates/OffIdentity/identity_key_display.html:15
+msgid "update"
+msgstr "Mettre à jour"
+
+#: OffIdentity/templates/OffIdentity/identity_key_display.html:20
+msgid "no_auth_key"
+msgstr "Aucune clé d'authentification"
+
+#: OffIdentity/templates/OffIdentity/identity_key_display.html:23
+msgid "virtual_identity_key_info"
+msgstr ""
+"Cette clé est virtuelle. Notez-la afin de la transmettre lors de la "
+"finalisation de votre enregirtement."
+
+#: OffIdentity/views/change_identity.py:25
+#: OffIdentity/views/create_identity.py:51
+msgid "nfc_key"
+msgstr "Clé d'authentification"
+
+#: OffIdentity/views/change_identity.py:27
+#: OffIdentity/views/create_identity.py:53
+msgid "scan_nfc_card"
+msgstr "Scanner la carte NFC"
+
+#: OffIdentity/views/change_identity.py:30
+#: OffIdentity/views/create_identity.py:56
+msgid "key_already_exists"
+msgstr ""
+"Cette clé d’identification existe déjà ! Vous devez en définir une autre."
+
+#: OffIdentity/views/change_identity.py:42
+msgid "identity_is_updated"
+msgstr "L'identité a été mise à jour"
+
+#: OffIdentity/views/create_identity.py:88
+msgid "identity_is_created"
+msgstr ""
+"L'identité a été créée.\n"
+"\n"
+"Merci  pour votre intérêt envers notre projet, vous allez recevoir un email "
+"à l'adresse <strong>%(email)s</strong> contenant le code ci-dessous et vous "
+"permettant de choisir un mot de passe.\n"
+"Vérifier vos spams si vous ne recevez pas le mail."
+
+#~ msgid "this_is_virtual_key_update_to_complete_registration"
+#~ msgstr ""
+#~ "Ceci est une clé virtuelle, vous devez la mettre à jour afin de terminer "
+#~ "l'enregistrement"

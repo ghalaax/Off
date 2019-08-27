@@ -1,0 +1,28 @@
+{% extends global.base_page %}
+{% load i18n %}
+{% block head_extra %}
+    <script type="text/javascript">
+        CardReader.submitCurrentStore = function(store, event){
+            var elt = document.getElementById('{{form.key.id_for_label}}');
+            CardReader.fillElementValue(elt, store, event);
+        }
+    </script>
+{% endblock head_extra %}
+{% block page_title %}
+    {% block title %}
+        {% trans 'offidentity_creation' %}
+    {% endblock %}
+{% endblock page_title %}
+{% block content %}
+<div class="box">
+    {{ form.non_field_errors }}
+    <form action="{% url 'OffIdentity:create'%}" method="post">
+        {% csrf_token %}
+        {% if form.key %}
+        {% include 'infrastructure/field_template.html' with field=form.key extra_class='center' only%}
+        {% endif %}
+        {% include 'infrastructure/user_fields.html'%}
+        <input type="submit" value="{% trans 'save'%}">
+    </form>
+</div>
+{% endblock content %}

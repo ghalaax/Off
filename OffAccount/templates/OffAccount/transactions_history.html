@@ -1,0 +1,39 @@
+{% load i18n %}
+{% load static %}
+<table>
+    <thead>
+        <th></th>
+        <th>{% trans 'transaction_account_from' %}</th>
+        <th>{% trans 'transaction_account_to' %}</th>
+        <th>{% trans 'transaction_date' %}</th>
+        <th>{% trans 'transaction_reason' %}</th>
+        <th>{% trans 'transaction_type' %}</th>
+        <th>{% trans 'credit' %}</th>
+    </thead>
+    <tbody>
+{% for transaction in account.transactions %}
+        <tr class="{% cycle 'light' '' %}">
+            <td>{{transaction.id}}</td>
+            {% if transaction.account_from.system_account or can_see_private_info%}
+            <td>{{transaction.account_from}}</td>
+            {% else %}
+            <td>account:{{transaction.account_from.id}}</td>
+            {% endif %}
+            {% if transaction.account_to.system_account or can_see_private_info%}
+            <td>{{transaction.account_to}}</td>
+            {% else %}
+            <td>account:{{transaction.account_to.id}}</td>
+            {% endif %}
+            <td>{{transaction.created_on}}</td>
+            <td>{{transaction.reason}}</td>
+            <td>{{transaction.transtype}}</td>
+            <td>{{transaction.value}}</td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+{% if show_full_history_link %}
+<div style="text-align:right;">
+    <a href='#'>{% trans 'go_to_full_transaction_history' %}</a>
+</div>
+{% endif %}

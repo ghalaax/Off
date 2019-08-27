@@ -1,0 +1,17 @@
+{% load i18n %}
+<div class="{{extra_css_class|default:''}} {% if request.user.is_superuser%}admin{% endif %} {% if not request.user.is_authenticated and not hide_account_dropdown%}keep-open{% endif %}">
+    {{content}}
+    <div class="box">
+        <ul>
+            {% if request.user.is_authenticated%}
+            <li><a href="{% url settings.USER_PROFILE_PATTERN_NAME request.user.id %}" class="link-style">{% trans 'profile'%}</a></li>
+            <hr/>
+            <li><a href="{% url 'logout' %}" class="link-style">{% trans 'disconnect'%}</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}?from_page={{request.path}}" class="link-style">{% trans 'connect'%}</a></li>
+            <hr/>
+            <li><a href="{% url settings.NEW_USER_PATTERN_NAME %}" class="link-style">{% trans 'subscribe'%}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

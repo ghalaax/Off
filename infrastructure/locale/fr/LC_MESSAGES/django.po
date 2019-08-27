@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-27 13:30+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: infrastructure/forms/user.py:40
+msgid "email_already_exists"
+msgstr "Cette adresse email est déjà utilisée"
+
+#: infrastructure/forms/user.py:45
+msgid "user_email"
+msgstr "Email"
+
+#: infrastructure/forms/user.py:47
+msgid "user_lastname"
+msgstr "Nom"
+
+#: infrastructure/forms/user.py:49
+msgid "user_firstname"
+msgstr "Prénom"
+
+#: infrastructure/templates/infrastructure/account_navitem_template.html:7
+msgid "profile"
+msgstr "Mon compte"
+
+#: infrastructure/templates/infrastructure/account_navitem_template.html:9
+msgid "disconnect"
+msgstr "Se déconnecter"
+
+#: infrastructure/templates/infrastructure/account_navitem_template.html:11
+msgid "connect"
+msgstr "Se connecter"
+
+#: infrastructure/templates/infrastructure/account_navitem_template.html:13
+msgid "subscribe"
+msgstr "Créer un Compte Sipy"
+
+#: infrastructure/templates/infrastructure/activity_cancel_link.html:2
+msgid "cancel"
+msgstr "Annuler"
+
+#: infrastructure/templates/infrastructure/activity_submit_input.html:5
+msgid "activity_next_label"
+msgstr "Suivant"
+
+#: infrastructure/templates/infrastructure/user_info_display.html:2
+msgid "username_label"
+msgstr "Nom d'utilisateur"
+
+#: infrastructure/templates/infrastructure/user_info_display.html:3
+msgid "email_label"
+msgstr "Email"
+
+#: infrastructure/templates/infrastructure/user_info_display.html:5
+msgid "civil_identity"
+msgstr "Identité civile"
+
+#: infrastructure/views/mixins.py:10 infrastructure/views/mixins.py:11
+msgid "home"
+msgstr "Accueil"
+
+#: infrastructure/views/mixins.py:12 infrastructure/views/mixins.py:15
+msgid "account"
+msgstr "Compte"
