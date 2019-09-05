@@ -1,0 +1,65 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+    {% block head %}
+    <title>{{global.site_name|default:'Application'}} | {% block title %}{% endblock title %}</title>
+    
+    {% block head_extra %}
+    
+    {% endblock head_extra %}
+    {% endblock head %}
+    </head>
+    <body>
+    <div class="collapsable-nav">
+    <div>
+    
+    {% block extra_navigation %}
+    {% if navigation.main %}
+            {{navigation.main}}
+    {% endif %}
+    {% endblock extra_navigation %}
+    </div>
+    <h3>{% block page_title %}&nbsp;{%endblock page_title%}</h3>
+        
+    </div>
+    {% if navigation.contextual %}
+            {{navigation.contextual}}
+        {% endif %}
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <p class="{{ message.tags }}">
+            {{message|linebreaksbr}}
+        </p>
+    </div>
+    {% endfor %}
+    <br/>
+    {% endif %}
+    {% block content %}
+    {% endblock content %}
+    <div id="cookie-warning" style="display:none;" class="center">
+        {% trans 'cookie_warning' as cookie_warning%}{{cookie_warning|linebreaksbr}}<br/>
+        <a href="#" class="validate" onclick="AcceptCookieWarning();">{% trans 'accept-cookie-label' %}</a>
+    </div>
+    <div id="about-popup-container" class="popup-container" style="display:none;">
+        <div class="popup box">
+            
+        </div>
+    </div>
+    <footer>
+    {% block footer %}
+    <p>
+    {% trans 'created_by' %}<br/>
+    {% trans 'licensing' %}<a style="display: inline;padding:0px;padding-left:4px;" rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img title="Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International." style="height: 14px;position:fixed;"alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br/>
+    {{global.version}}
+    </p>
+    {% block footer_extra %}
+    
+    {% endblock footer_extra %}
+    {% endblock footer %}
+    </footer>
+    </body>
+
+</html>

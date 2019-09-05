@@ -1,0 +1,29 @@
+{% extends global.base_page %}
+{% load i18n %}
+{% block head_extra %}
+    <script type="text/javascript">
+        CardReader.submitCurrentStore = function(store, event){
+            var elt = document.getElementById('{{form.key.id_for_label}}');
+            CardReader.fillElementValue(elt, store, event);
+        }
+    </script>
+{% endblock head_extra %}
+{% block page_title %}
+    {% block title %}
+        {% trans 'offidentity_update' %}
+    {% endblock title %}
+{% endblock page_title %}
+{% block content %}
+<div class="box">
+    {% include 'identity/identity_display.html' with identity=identity only %}
+    <h4>{% trans 'new_key' %}</h4>
+    {{ form.non_field_errors }}
+    <form method="post">
+        {% csrf_token %}
+        {% include 'infrastructure/field_template.html' with field=form.key extra_class='center' hidden=True only%}
+        {% include 'infrastructure/field_template.html' with field=form.next hidden=True only%}
+        <input type="submit" value="{% trans 'save'%}">
+        {% include 'infrastructure/activity_cancel_link.html' with cancel_url=cancel_url%}
+    </form>
+</div>
+{% endblock content %}

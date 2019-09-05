@@ -1,0 +1,2 @@
+django==2.2
+ptvsd==4.2

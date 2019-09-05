@@ -1,0 +1,4 @@
+{% if user.is_authenticated and user.is_superuser or user == profile.user %}
+{% include 'infrastructure/user_info_display.html' with user=identity.user%}
+{% endif %}
+{% include 'identity/identity_key_display.html' with identity=identity perms=perms update_next=update_next only%}

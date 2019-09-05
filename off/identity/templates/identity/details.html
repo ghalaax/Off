@@ -1,0 +1,16 @@
+{% extends global.base_page %}
+{% load i18n %}
+{% load static %}
+{% block head_extra %}
+<link rel="stylesheet" href="{% static 'identity/css/identity.css' %}"/>
+{% endblock head_extra %}
+{% block page_title %}
+    {% block title %}
+        {% trans 'offidentity_details' %}
+    {% endblock %}
+{% endblock page_title %}
+{% block content %}
+<div class="box">
+    {% include 'identity/identity_display.html' with user=user identity=identity perms=perms only %}    
+</div>
+{% endblock content %}
