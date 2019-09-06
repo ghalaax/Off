@@ -56,6 +56,6 @@ class Transaction(models.Model):
 
 
 @receiver(post_save, sender=User)
-def create_off_account(sender, instance, created, **kwargs):
+def create_account(sender, instance, created, **kwargs):
     if created:
         Account.objects.create(user=instance)
