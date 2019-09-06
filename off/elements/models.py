@@ -6,6 +6,7 @@ from enum import IntFlag, IntEnum
 import uuid
 
 class Element(models.Model):
+    __element_related_name__ = None
     uid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     title = models.CharField(blank=True, null=True, max_length=255)
     description = models.TextField(blank=True, null=True, max_length=1024)
@@ -14,6 +15,17 @@ class Element(models.Model):
                                     symmetrical=False,
                                     through='ElementLink',
                                     through_fields=('node', 'sibling'))
+    @classmethod
+    def cast(cls, element, raise_exception=False):
+        child_field_name = cls.__element_related_name__ or cls.__name__.lower()
+        if raise_exception:
+            return getattr(element, child_field_name)
+        return getattr(element, child_field_name, None)
+
+    @classmethod
+    def defines(cls, element):
+        child_field_name = cls.__element_related_name__ or cls.__name__.lower()
+        return hasattr(element, child_field_name)
     
     def __str__(self):
         return str(self.uid)
