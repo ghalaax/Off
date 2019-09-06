@@ -1,5 +1,5 @@
 from django.db import models
-from off.elements.models import Element, ElementMetadata
+from off.elements.models import Element, ElementMetadata, ElementHistory
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -22,3 +22,4 @@ class CommunityPart(models.Model):
 def create_community_metadata(sender, instance, created, **kwargs):
     if created:
         ElementMetadata.objects.create(element=instance.element_ptr, permissions=0)
+        ElementHistory.objects.create(element=instance, change='# community creation #')
