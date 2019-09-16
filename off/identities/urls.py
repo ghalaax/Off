@@ -19,7 +19,6 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import RedirectView
-
 from off.identities.views.create_identity import IdentityCreate
 from off.identities.views.view_identity import IdentityView
 from off.identities.views.change_identity import IdentityChange
