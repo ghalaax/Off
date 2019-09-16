@@ -31,8 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'off.identity',
-    'off.account',
+    'off.identities',
+    'off.accounts',
     'off.elements',
     'off.forums',
     'django.contrib.admin',
@@ -133,4 +133,4 @@ LANGUAGES = [
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-USER_PROFILE_PATTERN_NAME='off.identity:identity'
+USER_PROFILE_PATTERN_NAME='off.identities:identity'
