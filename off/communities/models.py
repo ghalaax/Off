@@ -1,8 +1,10 @@
 from django.db import models
-from off.elements.models import Element, ElementMetadata, ElementHistory
+from off.elements.models import Element, ElementMetadata, ElementHistory, Permissions
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from off.elements.services import element_metadata
+from off.elements.tools import hooks
 
 # Create your models here.
 
@@ -19,7 +21,5 @@ class CommunityPart(models.Model):
     alive = models.BooleanField(default=True)
 
 @receiver(post_save, sender=Community)
-def create_community_metadata(sender, instance, created, **kwargs):
-    if created:
-        ElementMetadata.objects.create(element=instance.element_ptr, permissions=0)
-        ElementHistory.objects.create(element=instance, change='# community creation #')
+def onCommunityCreateMetadata(instance, created, **kwargs):
+    element_metadata.Services.createElementMetadata(instance.element_ptr, created, Permissions.r | Permissions.w)

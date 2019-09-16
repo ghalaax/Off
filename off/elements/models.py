@@ -11,6 +11,7 @@ class Element(models.Model):
     title = models.CharField(blank=True, null=True, max_length=255)
     description = models.TextField(blank=True, null=True, max_length=1024)
     tags = models.CharField(blank=True, null=True, max_length=255)
+    renderer = models.CharField(blank=True, null=True, max_length=512)
     links = models.ManyToManyField( 'self', 
                                     symmetrical=False,
                                     through='ElementLink',
@@ -34,6 +35,7 @@ class Permissions(IntFlag):
     x = 1
     w = 2
     r = 4
+    all_access = 7
 
 class PermissionsShift(IntEnum):
     u = 6
@@ -41,7 +43,7 @@ class PermissionsShift(IntEnum):
     a = 0
 
 class ElementMetadata(models.Model):
-    element = models.ForeignKey(Element, on_delete=models.CASCADE, related_name='metadata')
+    element = models.OneToOneField(Element, on_delete=models.CASCADE, related_name='metadata')
     created_on = models.DateTimeField(auto_now_add=True)
     creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_elements')
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='owned_elements')
@@ -53,12 +55,18 @@ class ElementMetadata(models.Model):
         return str(self.element)
 
     def get_user_permissions(self, user):
-        permission_shift = PermissionsShift.a
+        if user.is_superuser:
+            return Permissions.all_access
+        scope = PermissionsShift.a
         if self.group is None or user.groups.filter(id=self.group.id).exists():
-            permission_shift = PermissionsShift.g
+            scope = PermissionsShift.g
         if self.owner is None or user == self.owner:
-            permission_shift = PermissionsShift.u
-        return self.permissions >> permission_shift
+            scope = PermissionsShift.u
+        return self.get_scope_permission(scope)
+
+    def get_scope_permission(self, scope):
+        permission_mask = (0b111 << scope)
+        return (self.permissions & permission_mask) >> scope
     
     def can(self, user_permissions, permission):
         return True if user_permissions & permission else False
@@ -68,28 +76,22 @@ class ElementMetadata(models.Model):
         return self.can(user_permissions, Permissions.w)
     def can_execute(self, user_permissions):
         return self.can(user_permissions, Permissions.x)
-    def can_cross(self, user_permissions):
-        return self.can(user_permissions, Permissions.x)
 
     def set_scope_permissions(self, permissions, shift, commit=True):
         remove_permissions = ~((Permissions.x | Permissions.r | Permissions.w) << shift)
         new_permissions = permissions << shift
         self.set_permissions((self.permissions & remove_permissions) | new_permissions, commit=commit)
+
     def set_permissions(self, permissions, commit=True):
         self.permissions = permissions
         if commit:
             self.save(update_fields=['permissions'])
 
-@receiver(post_save, sender=Element)
-def create_element_metadata(sender, instance, created, **kwargs):
-    if created:
-        ElementMetadata.objects.create(element=instance, permissions=0)
-        ElementHistory.objects.create(element=instance, change='# creation #')
-
 class ElementHistory(models.Model):
     element = models.ForeignKey(Element, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     change = models.CharField(max_length=1024)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return str(self.date) + ':' + str(self.element)
