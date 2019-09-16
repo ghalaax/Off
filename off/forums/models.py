@@ -8,18 +8,18 @@ from off.elements.tools import hooks
 
 # Create your models here.
 
-class Community(Element):
+class Forum(Element):
     federates = models.ManyToManyField(User, symmetrical=False,
-                                    through='CommunityPart',
+                                    through='ForumPart',
                                     through_fields=('community', 'federate'))
 
 
-class CommunityPart(models.Model):
-    community = models.ForeignKey(Community, on_delete=models.CASCADE)
+class ForumPart(models.Model):
+    community = models.ForeignKey(Forum, on_delete=models.CASCADE)
     federate = models.ForeignKey(User, on_delete=models.CASCADE)
     part_on = models.DateTimeField(auto_now_add=True)
     alive = models.BooleanField(default=True)
 
-@receiver(post_save, sender=Community)
-def onCommunityCreateMetadata(instance, created, **kwargs):
+@receiver(post_save, sender=Forum)
+def onForumCreateMetadata(instance, created, **kwargs):
     element_metadata.Services.createElementMetadata(instance.element_ptr, created, Permissions.r | Permissions.w)

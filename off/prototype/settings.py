@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'off.identity',
     'off.account',
     'off.elements',
-    'off.communities',
+    'off.forums',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
