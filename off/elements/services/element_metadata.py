@@ -82,6 +82,6 @@ class Services(infra.Services):
         return metadata
     
     @staticmethod
-    def createElementMetadata(element, created, permissions):
+    def createElementMetadata(element, created, user_permissions, group_permissions, all_permissions):
         if created:
-            ElementMetadata.objects.create(element=element, permissions=permissions)
+            metadata = ElementMetadata.objects.create(element=element)

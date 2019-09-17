@@ -16,7 +16,7 @@
             "type": "python",
             "request": "launch",
             "pythonPath": "${config:python.pythonPath}",
-            "program": "${workspaceFolder}/off/manage.py",
+            "program": "${workspaceFolder}/manage.py",
             "cwd": "${workspaceFolder}",
             "args": [
                 "shell"

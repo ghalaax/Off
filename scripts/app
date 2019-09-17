@@ -22,6 +22,11 @@ run() {
     python manage.py runserver 0.0.0.0:$LISTENING_PORT
 }
 
+shell() {
+    compilemessages
+    python manage.py shell
+}
+
 debug() {
    DJANGO_DEBUG=1 python manage.py runserver 0.0.0.0:$LISTENING_PORT 
 }
