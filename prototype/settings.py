@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'off.accounts',
     'off.elements',
     'off.forums',
+    'martor',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -133,4 +134,16 @@ LANGUAGES = [
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
+
+def create_static_dir(project_name, static_dir_name="static"):
+    return (project_name, os.path.join(BASE_DIR, project_name, static_dir_name),)
+
+STATICFILES_DIRS = [
+    create_static_dir('off/accounts'),
+    create_static_dir('off/identities'),
+    create_static_dir('off/elements'),
+    create_static_dir('off/forums'),
+    create_static_dir('off/infrastructure')
+]
 USER_PROFILE_PATTERN_NAME='off.identities:identity'

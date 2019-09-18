@@ -2,14 +2,15 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User, Group
+from martor.models import MartorField
 from enum import IntFlag, IntEnum
 import uuid
 
 class Element(models.Model):
     __element_related_name__ = None
     uid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(blank=True, null=True, max_length=255)
-    description = models.TextField(blank=True, null=True, max_length=1024)
+    title = models.CharField(blank=True, null=True, max_length=255, unique=True)
+    description = MartorField(blank=True, null=True)
     tags = models.CharField(blank=True, null=True, max_length=255)
     renderer = models.CharField(blank=True, null=True, max_length=512)
     links = models.ManyToManyField( 'self', 
@@ -35,6 +36,7 @@ class Permissions(IntFlag):
     x = 1
     w = 2
     r = 4
+    rw = 6
     all_access = 7
 
 class PermissionsShift(IntEnum):
