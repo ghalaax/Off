@@ -27,8 +27,8 @@ class HistoryTransferObject:
 
     def addPropertyChange(self, property_name, from_value, to_value, none_string='nothing', value_format=str):
         if callable(value_format):
-            from_value = value_format(from_value)
-            to_value = value_format(to_value)
+            from_value = value_format(from_value) if from_value else None
+            to_value = value_format(to_value) if to_value else None
         else:
             from_value = value_format.format(value=from_value)
             to_value = value_format.format(value=to_value)

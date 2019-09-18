@@ -1,7 +1,7 @@
 from off.elements.models import ElementMetadata, ElementHistory, PermissionsShift, Permissions
 from off.infrastructure import services as infra
 from django.db import transaction
-from off.elements.services import element_history, HistoryScope
+from off.elements.services import element_histories, HistoryScope
 from off.elements.tools.history import HistoryTransferObject
 from off.elements.tools.permissions import get_permissions_rwx
 
@@ -81,7 +81,5 @@ class Services(infra.Services):
         metadata.set_scope_permissions(new_permissions, scope, commit)
         return metadata
     
-    @staticmethod
-    def createElementMetadata(element, created, user_permissions, group_permissions, all_permissions):
-        if created:
-            metadata = ElementMetadata.objects.create(element=element)
+    def createElementMetadata(self, element):
+        return ElementMetadata.objects.create(element=element, creator=self.user, owner=self.user, permissions=0)

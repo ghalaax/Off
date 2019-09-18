@@ -1,1 +1,1 @@
-from off.elements.services.element_history import HistoryScope
+from off.elements.services.element_histories import HistoryScope
