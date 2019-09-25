@@ -10,3 +10,7 @@ class Services:
     def __init__(self, context, *args, **kwargs):
         self.context = context
         self.user = context.user
+
+class ServiceContext:
+    def __init__(self, user):
+        self.user = user

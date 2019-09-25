@@ -5,9 +5,7 @@ from off.elements.services import element_histories, HistoryScope
 from off.elements.tools.history import HistoryTransferObject
 from off.elements.tools.permissions import get_permissions_rwx
 
-class Services(infra.Services):
-
-    class Preconditions:
+class Preconditions:
         @staticmethod
         def canChangeOwner(user, element):
             return user.is_superuser
@@ -23,6 +21,18 @@ class Services(infra.Services):
             if user.is_superuser:
                 return True
             return user == element.owner
+        
+        @staticmethod
+        def canRead(user, element):
+            permissions = element.metadata.get_user_permissions(user)
+            return element.metadata.can_read(permissions)
+        
+        @staticmethod
+        def canWrite(user, element):
+            permissions = element.metadata.get_user_permissions(user)
+            return element.metadata.can_write(permissions)
+
+class Services(infra.Services):
 
     def __init__(self, context, *args, **kwargs):
         return super().__init__(context, *args, **kwargs)
@@ -43,7 +53,7 @@ class Services(infra.Services):
 
     @transaction.atomic
     def setGroup(self, metadata:ElementMetadata, new_group, changes:HistoryTransferObject=None, commit=True):
-        if not self.Preconditions.canChangeGroup(self.user, metadata.element):
+        if not Preconditions.canChangeGroup(self.user, metadata.element):
             raise PermissionError()
         self.__setPropertyHistory(metadata.element, changes, 'group', metadata.group, new_group, lambda g:g.name)
         metadata.group = new_group
@@ -53,7 +63,7 @@ class Services(infra.Services):
 
     @transaction.atomic
     def setPermissions(self, metadata:ElementMetadata, new_permissions, changes:HistoryTransferObject=None, commit=True):
-        if not self.Preconditions.canChangePermissions(self.user, metadata.element):
+        if not Preconditions.canChangePermissions(self.user, metadata.element):
             raise PermissionError()
         self.__setPropertyHistory(metadata.element, changes, 'permissions', metadata.permissions, new_permissions, get_permissions_rwx)
         metadata.set_permissions(new_permissions, commit)
@@ -73,7 +83,7 @@ class Services(infra.Services):
 
     @transaction.atomic
     def setScopePermissions(self, metadata:ElementMetadata, new_permissions, scope, scope_name, changes:HistoryTransferObject=None, commit=True):
-        if not self.Preconditions.canChangePermissions(self.user, metadata.element):
+        if not Preconditions.canChangePermissions(self.user, metadata.element):
             raise PermissionError()
         if new_permissions > Permissions.all_access:
             raise ValueError('scope permissions cannot be greater than 7')

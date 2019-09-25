@@ -4,10 +4,6 @@ from off.infrastructure import services as infra
 from off.elements.tools.history import HistoryTransferObject
 
 class Services(infra.Services):
-    
-    class _HistoryWeakContext:
-        def __init__(self, user):
-            self.user = user
 
     def __init__(self, context, *args, **kwargs):
         return super().__init__(context, *args, **kwargs)
@@ -52,5 +48,5 @@ class HistoryScope:
 
     def __exit__(self, ex_type, value, traceback):
         if self.commit_changes:
-            services = Services(Services._HistoryWeakContext(self.user))
+            services = Services(infra.ServiceContext(self.user))
             services.createEntry(self.element, self.changes)

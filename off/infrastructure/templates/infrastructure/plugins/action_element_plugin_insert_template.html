@@ -1,0 +1,5 @@
+{% if inplace %}
+<a href="#" onclick="{{action}}({{element.uid}})" title="{{action_name}}">{{content}}</a>
+{% else %}
+<a href="{% url action element.uid %}" title="{{action_name}}">{{content}}</a>
+{% endif %}

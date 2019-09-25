@@ -133,7 +133,8 @@ LANGUAGES = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = 'https://statics.off.ngo/'
+STATIC_URL = '/statics/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
 
 def create_static_dir(project_name, static_dir_name="static"):
@@ -147,3 +148,11 @@ STATICFILES_DIRS = [
     create_static_dir('off/infrastructure')
 ]
 USER_PROFILE_PATTERN_NAME='off.identities:identity'
+
+
+APPS_PLUGINS = [
+    'off.identities',
+    'off.accounts',
+    'off.elements',
+    'off.forums',
+]

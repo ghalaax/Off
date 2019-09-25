@@ -15,9 +15,7 @@ class Services(infra.Services):
 
     @transaction.atomic
     def createForum(self, title: str):
-        forum = Forum()
-        forum.title = get_title_for_element(title, Forum)
-        forum.save() # save to be able to reference it later
+        forum = Forum.objects.create(title=get_title_for_element(title, Forum))
         # create a new django group
         group = Group.objects.create(name=forum.title)
         metadata = self.metadatas.createElementMetadata(forum)

@@ -37,6 +37,9 @@ main() {
     local cmd="$1" ; shift || error "Missing command"
     
     $cmd "$@"
+    if [ $? -ne 0 ]; then
+        python manage.py $cmd "$@"
+    fi
 }
 
 main "$@"
