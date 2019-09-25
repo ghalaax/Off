@@ -39,7 +39,7 @@ class Services(infra.Services):
     @transaction.atomic
     def _createLink(self, link_type, element, to_element):
         title = get_title_for_element('element(%s) link_type(%s) element(%s)' % (element.uid, link_type.name, to_element.uid), ElementLink)
-        link = ElementLink.objects.create(title=title, node=element, sibling=to_element, type=link_type)
+        link = ElementLink.objects.create(title=title, node=element, sibbling=to_element, type=link_type)
         metadata = self.metadatas.createElementMetadata(link)
         with element_histories.HistoryScope(link, self.user, local_changes_action='Create link(%s)' % link_type.name) as scope:
             if self.isPublicLink(link_type):
@@ -70,7 +70,7 @@ class Services(infra.Services):
             raise PermissionError()
         link_type = self.getLinkType(link_type, private=private)
         try:
-            link = ElementLink.objects.get(type=link_type, node=element, sibling=to_element)
+            link = ElementLink.objects.get(type=link_type, node=element, sibbling=to_element)
             if not link.alive:
                 link.alive = True
                 link.save()
