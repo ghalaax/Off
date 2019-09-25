@@ -135,3 +135,33 @@ class ElementLink(Element):
         ElementLinkType, on_delete=models.SET_NULL, null=True)
     linked_on = models.DateTimeField(auto_now_add=True)
     alive = models.BooleanField(default=True)
+
+class OffElement(models.Model):
+    uid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    content = models.CharField(max_length=4096)
+    links = models.ManyToManyField('self',
+                                   symmetrical=False,
+                                   through='ElementLink',
+                                   through_fields=('node', 'sibbling'))
+
+class OffElementLinkType(models.Model):
+    class Meta:
+        unique_together = ['semantic', 'algorithm']
+    semantic = models.CharField(max_length=256, unique=True)
+    algorithm = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.name
+
+
+class OffElementLink(Offlement):
+    class Meta:
+        unique_together = ['node', 'sibbling', 'type']
+    node = models.ForeignKey(
+        OffElement, on_delete=models.CASCADE, related_name='link_startpoints')
+    sibbling = models.ForeignKey(
+        OffElement, on_delete=models.CASCADE, related_name='link_endpoints')
+    type = models.ForeignKey(
+        OffElementLinkType, on_delete=models.SET_NULL, null=True)
+    linked_on = models.DateTimeField(auto_now_add=True)
+    alive = models.BooleanField(default=True)
