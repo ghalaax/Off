@@ -1,0 +1,6 @@
+{% load i18n %}
+{% if submit_label %}
+    <input type="submit" value="{% trans submit_label%}" />
+{% else %}
+    <input type="submit" value="{% trans 'activity_next_label'%}" />
+{% endif %}

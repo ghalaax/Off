@@ -3,3 +3,4 @@ djangorestframework==3.10.3
 ptvsd==4.2
 requests==2.22
 martor==1.4.1
+rx==3.0.1

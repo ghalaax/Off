@@ -1,0 +1,13 @@
+{% if is_paginated %}
+<div class="pagination">
+    <span class="step-links">
+        <a class="link-style {% if not page_obj.has_previous %}hidden{% endif %}" href="?page=1&{{pagination.querystring}}">&lt;&lt;</a>
+        <a class="link-style {% if not page_obj.has_previous %}hidden{% endif %}" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}&{{pagination.querystring}}{% endif %}">&lt;</a>
+        <span class="current">
+             {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        </span>
+        <a class="link-style {% if not page_obj.has_next %}hidden{% endif %}" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}&{{pagination.querystring}}{% endif %}">&gt;</a>
+        <a class="link-style {% if not page_obj.has_next %}hidden{% endif %}" href="?page={{ page_obj.paginator.num_pages }}&{{pagination.querystring}}">&gt;&gt;</a>
+    </span>
+</div>
+{% endif %}

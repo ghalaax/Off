@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+from django.utils.translation import gettext_lazy as _
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -31,10 +32,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'off.identities',
-    'off.accounts',
+    # 'off.identities',
+    # 'off.accounts',
     'off.elements',
-    'off.forums',
+    # 'off.forums',
     'martor',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -123,7 +124,6 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'prototype', 'locale'),
     os.path.join(BASE_DIR, 'infrastructure', 'locale')
 )
-from django.utils.translation import gettext_lazy as _
 
 LANGUAGES = [
     ('fr', _('French'))
@@ -133,12 +133,14 @@ LANGUAGES = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-#STATIC_URL = 'https://statics.off.ngo/'
+# STATIC_URL = 'https://statics.off.ngo/'
 STATIC_URL = '/statics/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
 
+
 def create_static_dir(project_name, static_dir_name="static"):
     return (project_name, os.path.join(BASE_DIR, project_name, static_dir_name),)
+
 
 STATICFILES_DIRS = [
     create_static_dir('off/accounts'),
@@ -147,12 +149,12 @@ STATICFILES_DIRS = [
     create_static_dir('off/forums'),
     create_static_dir('off/infrastructure')
 ]
-USER_PROFILE_PATTERN_NAME='off.identities:identity'
+USER_PROFILE_PATTERN_NAME = 'off.identities:identity'
 
 
 APPS_PLUGINS = [
-    'off.identities',
-    'off.accounts',
+    # 'off.identities',
+    # 'off.accounts',
     'off.elements',
-    'off.forums',
+    # 'off.forums',
 ]

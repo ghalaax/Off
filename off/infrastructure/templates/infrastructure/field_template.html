@@ -1,0 +1,18 @@
+{% if field.errors %}
+<div class="form-field {{field.errors|yesno:'field_error,'}} {{extra_class}} " {{extra_attr}}>
+{%else%}
+<div class="form-field {{extra_class}} " {{extra_attr}}>
+{%endif%}
+{% if not hidden and not invert %}
+    <label class="{{field.field.required|yesno:'required,'}} {{field.errors|yesno:'error,'}}" for="{{field.id_for_label}}">{{field.label}}</label>
+{% endif %}
+    {{ field }}
+    {% if field.errors %}
+    <div class="error">
+    {{ field.errors }}
+    </div>
+    {%endif%}
+{% if not hidden and invert %}
+<label class="{{field.field.required|yesno:'required,'}} {{field.errors|yesno:'error,'}}" for="{{field.id_for_label}}">{{field.label}}</label>
+{% endif %}
+</div>

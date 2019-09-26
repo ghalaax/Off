@@ -1,0 +1,9 @@
+{% if navigation %}
+<nav class="navigation {{navigation.extra_css_class|default:''}}">
+    {% for item in navigation.items %}
+        {% if not forloop.first	%}
+        {% endif %}
+        {{item}}
+    {% endfor %}
+</nav>
+{% endif %}

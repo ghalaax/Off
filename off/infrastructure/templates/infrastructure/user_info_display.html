@@ -1,0 +1,6 @@
+{% load i18n %}
+<label>{% trans 'username_label' %}</label> {{user.username}}<br/>
+<label>{% trans 'email_label' %}</label> {{user.email}}<br/>
+{% if user.first_name or user.last_name %}
+    <label>{% trans 'civil_identity' %}</label> {{user.first_name|capfirst}} {{user.last_name|capfirst}} <br/>
+{% endif %}
