@@ -16,27 +16,13 @@ class Element(models.Model):
     alive = models.BooleanField(default=True)
 
 
-# class Linker(Element):
-#     class Meta:
-#         unique_together = ['semantic', 'algorithm']
-#     semantic = models.ForeignKey(Element, on_delete=models.SET_NULL, null=True,
-#                                  related_name='semantical_linker')
-#     algorithm = models.ForeignKey(Element, on_delete=models.SET_NULL, null=True,
-#                                   blank=True, related_name='algorithmical_linker')
-
-#     def __str__(self):
-#         return '%s:%s' % (self.semantic.content, self.algorithm.content if self.algorithm else '')
-
-
 class ElementLink(Element):
     class Meta:
-        unique_together = ['subject', 'object']     # , 'link']
+        unique_together = ['subject', 'object']
     subject = models.ForeignKey(
         Element, on_delete=models.CASCADE, related_name='link_startpoints')
     object = models.ForeignKey(
         Element, on_delete=models.CASCADE, related_name='link_endpoints')
-    # link = models.ForeignKey(
-    #     Linker, on_delete=models.SET_NULL, null=True, related_name='define_links')
 
 
 class UserElement(Element):
