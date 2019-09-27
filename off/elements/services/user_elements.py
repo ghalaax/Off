@@ -8,14 +8,8 @@ class Services(infra.Services):
         super().__init__(context, *args, **kwargs)
         self._user_element = self.get_user_element()
 
+    @transaction.atomic
     def get_user_element(self):
         if not self._user_element:
-            try:
-                self._user_element = UserElement.objects.get(user=self.user)
-            except UserElement.DoesNotExist:
-                self._user_element = self.__create_user_element__()
+            self._user_element = UserElement.objects.get_or_create(user=self.user)[0]
         return self._user_element
-
-    @transaction.atomic
-    def __create_user_element__(self):
-        return UserElement.objects.create(user=self.user)

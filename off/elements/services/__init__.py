@@ -8,3 +8,4 @@ def __get_element_notifier__() -> ElementNotifier:
 
 
 element_notifier = __get_element_notifier__()
+element_divers = dict()
