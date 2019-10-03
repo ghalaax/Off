@@ -1,44 +1,20 @@
-import enum
-import uuid
-import rx
-from rx import subject
-from rx import operators as ops
-import abc
-
-from off.elements.models import Element, ElementLink, Linker, UserElement
-from off.elements.services import user_elements
-from off.infrastructure import services as infra
 from django.db import transaction
-from ..services import element_notifier, element_divers
 
+from off.elements.constants import BuiltinSemantics, source_element_uid
+from off.elements.models import Element, ElementLink
+from off.infrastructure import services as infra
 
-class BuiltinSemantics(enum.Enum):
-    verb = uuid.UUID(int=1)
-    shapes = uuid.UUID(int=2)
-    creates = uuid.UUID(int=3)
-    shares = uuid.UUID(int=4)
-    allows_read = uuid.UUID(int=6)
-    allows_write = uuid.UUID(int=7)
-    references = uuid.UUID(int=8)
-    changes = uuid.UUID(int=9)
-    continues = uuid.UUID(int=10)
-
-    def __str__(self):
-        return repr(self)
+from ..services import element_notifier
 
 
 class Services(infra.Services):
-    source_element_uid = uuid.UUID(int=0)
 
     def __init__(self, context, *args, **kwargs):
         super().__init__(context, *args, **kwargs)
-        self.user_element_services = user_elements.Services.fromContext(
-            context)
         self.source_element = None
         self.verb_builtin_element = None
         self.__ensure_semantics_builtins__()
 
-    # todo
     def __ensure_semantics_builtins__(self):
         builtin_semantics = set([b.value for b in BuiltinSemantics])
         builtins_elements = Element.objects.filter(
@@ -48,7 +24,6 @@ class Services(infra.Services):
         self.__create_missing_semantic_builtins__(
             [BuiltinSemantics(b) for b in missing_builtins])
 
-    # todo
     @transaction.atomic
     def __create_missing_semantic_builtins__(self, missing_builtins):
         for builtin in missing_builtins:
@@ -56,6 +31,10 @@ class Services(infra.Services):
 
     @transaction.atomic
     def link_to_element(self, subject_element, link_elements, object_element) -> ElementLink:
+        """
+        Creates or expands the link between 2 elements with the given link_elements:
+         * link_elements: can be an Element list or a single Element
+        """
         (link, created) = ElementLink.objects.get_or_create(subject=subject_element,
                                                             object=object_element)
         if isinstance(link_elements, Element):
@@ -66,30 +45,48 @@ class Services(infra.Services):
             element_notifier.push(link, self.context)
         return link
 
+    def get_souls(self, elements):
+        if not isinstance(elements, list, set, tuple):
+            elements = set(elements)
+        self.source_element = self.get_source_element()
+        return ElementLink.objects.filter(subject=source_element, object__in=elements).all()
+
+    def get_shape(self, element):
+        self.source_element = self.get_source_element()
+        return Element.objects.get(links__object=BuiltinSemantics.shapes, link_startpoint__subject=self.source_element, link_startpoint__object=element)
+
     def get_source_element(self) -> Element:
+        """
+        Gets or creates the source.
+        The source shapes itself
+        """
         if not self.source_element:
-            try:
-                self.source_element = self.Element.objects.get(
-                    uid=self.source_element_uid)
-            except Element.DoesNotExist:
-                self.source_element = self.__create_source_element__()
+            (self.source_element, created) = self.__create_source_element__()
+            if created:
                 shapes = self.__get_builtin__(BuiltinSemantics.shapes)
-                self.link_to_element(source_element, shapes, source_element)
+                self.link_to_element(self.source_element,
+                                     shapes, self.source_element)
                 element_notifier.push(self.source_element)
         return self.source_element
 
+    def get_element(self, **kwargs):
+        """
+        Gets an element given the kwargs
+         * Throws Element.DoesNotExist
+        """
+        return Element.objects.get(**kwargs)
+
     @transaction.atomic
     def __create_source_element__(self) -> Element:
-        return self.__create_element__(uid=self.source_element_uid)
+        return self.__create_element__(uid=source_element_uid)
 
     @transaction.atomic
     def __create_element__(self, **kwargs) -> Element:
-        return Element.objects.create(**kwargs)
+        return Element.objects.get_or_create(**kwargs)
 
     @transaction.atomic
     def __create_builtin_element__(self, builtin) -> Element:
-        element = self.__create_element__(
-            content=str(builtin), uid=builtin.value)
+        element = self.__create_element__(uid=builtin.value)
         if builtin == BuiltinSemantics.verb:
             self.verb_builtin_element = builtin
         elif not self.verb_builtin_element:
@@ -103,51 +100,26 @@ class Services(infra.Services):
 
     def __get_builtin__(self, builtin, create_when_needed=True) -> Element:
         try:
-            return Element.objects.get(uid=builtin.value, content=str(builtin))
+            return Element.objects.get(uid=builtin.value)
         except Element.DoesNotExist:
             if create_when_needed:
                 builtin_element = self.__create_builtin_element__(builtin)
                 return builtin_element
             return None
 
+    def get_builtin(self, builtin):
+        """
+        Gets the builtin element matching the given builtin object.
+
+        Returns None if it doesn't exist
+        """
+        return self.__get_builtin__(builtin, create_when_needed=False)
+
     @transaction.atomic
-    def create_element(self, shape, content) -> Element:
-        user_element = self.user_element_services.get_user_element()
-
-    def __dive_links__(self, element_link):
-        pass
-
-    def can_read(self, element) -> Element:
-        user_element = self.user_element_services.get_user_element()
-        try:
-            direct_link = ElementLink.objects.get(
-                subject=user_element, object=element)
-
-        except ElementLink.DoesNotExist:
-            pass
-
-
-def register_diver(diver):
-    """
-    Register the diver function.
-    The diver signature is: func(element, diver_element, target_element)
-    """
-    def _decorator(func):
-        if diver not in element_divers:
-            element_divers[diver] = set()
-        element_divers[str(diver)].add(func)
-        return func
-    return _decorator
-
-
-@register_diver(BuiltinSemantics.creates)
-def has_created(creator_element, diver_element: Element, target_element):
-    return ElementLink.objects.filter(subject=creator_element, object=target_element, links__object=diver_element).exists()
-
-
-@register_diver(BuiltinSemantics.shapes)
-def get_shape(source_element, diver_element: Element, target_element):
-    return Element.objects.get(links__object=diver_element, links_startpoints=source_element, links_endpoints=target_element)
+    def create_element(self, shape_element, data) -> Element:
+        self.source_element = self.get_source_element()
+        element = self.__create_element__(data=data)
+        self.link_to_element(self.source_element, shape_element, element)
 
 
 a = {

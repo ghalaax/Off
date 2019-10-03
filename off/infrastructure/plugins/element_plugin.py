@@ -19,7 +19,7 @@ class ElementPlugin:
     def __allows_element_type(self, element):
         if not self.allowed_element_types:
             return True
-        return any([t for t in self.allowed_element_types 
+        return any([t for t in self.allowed_element_types
                     if t.defines(element)])
 
     def create_insert(self, insert, element):
@@ -32,9 +32,9 @@ class ElementPlugin:
         return insert is not None and insert.data_type == data_type
 
     def get_inserts(self, element, data_type):
-        return [self.create_insert(insert, element) 
-                    for insert in self.plugin_inserts 
-                    if self.is_insert_acceptable(insert, data_type)]
+        return [self.create_insert(insert, element)
+                for insert in self.plugin_inserts
+                if self.is_insert_acceptable(insert, data_type)]
 
     def get_desired_position(self, element):
         """

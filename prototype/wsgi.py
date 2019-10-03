@@ -18,6 +18,7 @@ logger = logging.getLogger('plugins')
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'prototype.settings')
 
+
 def register_plugins(module):
     plugin_module = '{module}.plugins'.format(module=module)
     try:
@@ -25,11 +26,12 @@ def register_plugins(module):
     except ModuleNotFoundError as module_not_found:
         logger.error(str(module_not_found))
 
+
 def get_wsgi_application():
     wsgi = django_wsgi()
     for app in APPS_PLUGINS:
         register_plugins(app)
     return wsgi
-    
+
 
 application = get_wsgi_application()

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     # 'off.identities',
     # 'off.accounts',
     'off.elements',
+    'off.users',
     # 'off.forums',
     'martor',
     'django.contrib.admin',
