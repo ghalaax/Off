@@ -1,5 +1,5 @@
 django==2.2.5
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 ptvsd==4.2
 requests==2.22
 martor==1.4.1
